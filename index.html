@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"></meta>
+  <title>Visualizer Mk.I</title>
+  <link href="app.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+  <div class="wrapper">
+    <canvas class="visualizer"></canvas>
+
+    <!-- visualizer buttons -->
+    <button class="mute-button">mute</button>
+
+    <!-- visualizer mode menu -->
+    <label>Visualizer modes</label>
+    <select id="visual" name="visual">
+      <option value="sinewave" selected="">Sinewave</option>
+      <option value="frequencybars">Frequency Bars</option>
+      <option value="sinewave_enchanced">Sinewave Enhanced</option>
+      <option value="off">Off</option>
+    </select>
+  </div>
+  <!-- load JS files -->
+  <script src="visualizer.js"></script>
+</body>
+</html>
