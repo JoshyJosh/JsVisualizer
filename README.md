@@ -8,6 +8,7 @@ Current stage is just a (slightly worse) copy of the original, because I wanted 
 Currently the visualizer is on fullscreen, the options are accessible with the up and down arrows.
 
 Mute works with a delay. Think its something to do with buffer, checking it with next iteration.
+Has buggy mute unmute toggle.
 
 TODO:
 -fullscreen mode (better version)
