@@ -11,9 +11,11 @@ Mute works with a delay. Think its something to do with buffer, checking it with
 Has buggy mute unmute toggle.
 
 TODO:
+
 -fullscreen mode (better version)
+
 -new visualizer modes
--fix mute button (make the mute instantaneous)
+
 -possible effect output from WEB Audio API?
 
 This is a pet project so any comments and suggestions are welcome :]
