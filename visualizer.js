@@ -31,6 +31,7 @@ var analyser = audioCtx.createAnalyser();
 analyser.minDecibels = -90;
 analyser.maxDecibels = -10;
 analyser.smoothingTimeConstant = 0.85;
+console.log(analyser);
 
 var distortion = audioCtx.createWaveShaper();
 var gainNode = audioCtx.createGain();
@@ -142,9 +143,7 @@ function visualize() {
   console.log(visualSetting);
 
   if(visualSetting == "sinewave") {
-    /* TODO ORIGINAL DO NOT REPLACE
-    analyser.fftSize = 2048; */
-    analyser.fftSize = 1024;
+    analyser.fftSize = 2048;
     var bufferLength = analyser.fftSize;
     console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
@@ -299,15 +298,15 @@ var stream_store = stream;
 
 function voiceMute() {
   console.log(gainNode);
+  console.log(source);
   if(mute.id == "") {
     console.log("gain disabling" + this);
+    source.disconnect(analyser);
     gainNode.gain.value = 0;
     console.log("gain disabled" + gainNode.gain.value);
     mute.id = "activated";
     mute.innerHTML = "Unmute";
-    source = null;
   } else {
-    beginUserMedia();
     source.connect(analyser);
     gainNode.gain.value = 1;
     mute.id = "";
