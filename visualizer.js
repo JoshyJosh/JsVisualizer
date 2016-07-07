@@ -8,16 +8,10 @@ navigator.getUserMedia = (navigator.getUserMedia ||
                           navigator.mediaDevices.getUserMedia ||
                           navigator.msGetUserMedia);
 
-if(navigator.getUserMedia == null) {
-  console.log("navigator isn't working.");
-} else {
-  console.log("navigator is loaded");
-}
-
 // forked web audio context, for multiple browsers
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 // no voice select for now...
-//var voiceSelect = document.getElementById("voice");
+var voiceSelect = document.getElementById("voice");
 var source;
 var stream;
 
@@ -31,7 +25,6 @@ var analyser = audioCtx.createAnalyser();
 analyser.minDecibels = -90;
 analyser.maxDecibels = -10;
 analyser.smoothingTimeConstant = 0.85;
-console.log(analyser);
 
 var distortion = audioCtx.createWaveShaper();
 var gainNode = audioCtx.createGain();
@@ -110,13 +103,17 @@ if (navigator.getUserMedia) {
       source = audioCtx.createMediaStreamSource(stream);
       source.connect(analyser);
       analyser.connect(distortion);
-      distortion.connect(biquadFilter);
-      biquadFilter.connect(convolver);
-      convolver.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
+      distortion.connect(audioCtx.destination);
+      //distortion.connect(biquadFilter);
+      //biquadFilter.connect(convolver);
+      //convolver.connect(gainNode);
+      //gainNode.connect(audioCtx.destination);
+      //console.log(audioCtx.destination);
+      console.log(distortion.curve);
+      console.log(distortion.oversample);
 
       visualize();
-      voiceChange();
+      //voiceChange();
     },
 
     // Error callback
@@ -192,6 +189,7 @@ function visualize() {
     var bufferLength = analyser.frequencyBinCount;
     console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
+    gotData = false;
 
     canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -200,6 +198,10 @@ function visualize() {
 
       analyser.getByteTimeDomainData(dataArray);
 
+      if(gotData == false) {
+        console.log(dataArray);
+        gotData = true;
+      }
       canvasCtx.fillStyle = 'rgb(0, 0, 0)';
       canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -271,16 +273,31 @@ function visualize() {
 
 }
 
-//TODO remove
-//canvas.onclick = function(){console.log("clicked canvas")}
-//TODO run voiceMute()
-console.log(gainNode);
 mute.onclick = function(){
   console.log(gainNode);
   voiceMute();
-  console.log(gainNode.gain.value);};
+}
 
-function voiceChange() {}
+function voiceChange() {
+
+  console.log(distortion.curve);
+  //biquadFilter.gain.value = 0;
+  //convlver.buffer = undefined;
+
+  //check for defaults
+  distortion.curve = null;
+  distortion.oversample = 'none';
+
+  var voiceSetting = voiceSelect.value;
+  console.log(voiceSetting);
+  if(voiceSetting == "distortion"){
+    console.log("distortion turned on!");
+    distortion.oversample = '4x';
+    distortion.curve = makeDistortionCurve(400);
+  } else if(voiceSetting == "off") {
+    console.log("voice effect is turned off!");
+  }
+}
 
 // event listeners to change visualize and voice settings
 
@@ -289,12 +306,9 @@ visualSelect.onchange = function() {
   visualize();
 }
 
-/* TODO make effects */
-/*voiceSelect.onchange = function() {
+voiceSelect.onchange = function() {
   voiceChange();
-}*/
-
-var stream_store = stream;
+}
 
 function voiceMute() {
   console.log(gainNode);
