@@ -10,15 +10,13 @@ navigator.getUserMedia = (navigator.getUserMedia ||
 
 // forked web audio context, for multiple browsers
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-// no voice select for now...
+
+// voice select for effects
 var voiceSelect = document.getElementById("voice");
 var source;
 var stream;
 
-
-// TODO setup mute button
 var mute = document.getElementsByClassName('mute-button')[0];
-//mute_btn.onclick=function(){console.log("Foobar!")};
 
 // set up the different audio nodes for the app
 var analyser = audioCtx.createAnalyser();
@@ -102,13 +100,15 @@ if (navigator.getUserMedia) {
     function(stream) {
       source = audioCtx.createMediaStreamSource(stream);
       source.connect(analyser);
-      analyser.connect(distortion);
-      distortion.connect(audioCtx.destination);
-      //distortion.connect(biquadFilter);
-      //biquadFilter.connect(convolver);
+      analyser.connect(distortion);;
+      distortion.connect(biquadFilter);
+      biquadFilter.connect(gainNode);
+
+      // convolver dosen't work for some reason
+      // goin to put it in the todo
       //convolver.connect(gainNode);
-      //gainNode.connect(audioCtx.destination);
-      //console.log(audioCtx.destination);
+      gainNode.connect(audioCtx.destination);
+
       console.log(distortion.curve);
       console.log(distortion.oversample);
 
@@ -278,11 +278,13 @@ mute.onclick = function(){
   voiceMute();
 }
 
+// Effect change functions
+
 function voiceChange() {
 
   console.log(distortion.curve);
-  //biquadFilter.gain.value = 0;
-  //convlver.buffer = undefined;
+  biquadFilter.gain.value = 0;
+  //convlver.buffer = "";
 
   //check for defaults
   distortion.curve = null;
@@ -292,8 +294,13 @@ function voiceChange() {
   console.log(voiceSetting);
   if(voiceSetting == "distortion"){
     console.log("distortion turned on!");
-    distortion.oversample = '4x';
+    //oversample seemed like a good idea, but the sound was off on guitar
+    //distortion.oversample = '4x';
     distortion.curve = makeDistortionCurve(400);
+  } else if(voiceSetting == "biquad") {
+    biquadFilter.type = "lowshelf";
+    biquadFilter.frequency.value = 1000;
+    biquadFilter.gain.value = 25;
   } else if(voiceSetting == "off") {
     console.log("voice effect is turned off!");
   }

@@ -12,10 +12,14 @@ Has buggy mute unmute toggle.
 
 TODO:
 
--fullscreen mode (better version)
+-improved UI (top center Mozilla mic icon might be a problem)
 
 -new visualizer modes
 
--possible effect output from WEB Audio API?
+-try to enable convolver
+
+-need wider input range for possible guitar input via mic
+
+-custom module config? (pick from list?)
 
 This is a pet project so any comments and suggestions are welcome :]
