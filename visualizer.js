@@ -10,6 +10,9 @@ navigator.getUserMedia = (navigator.getUserMedia ||
 
 // forked web audio context, for multiple browsers
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+if(audioCtx) {
+  console.log("Audio context works!");
+}
 
 // voice select for effects
 var voiceSelect = document.getElementById("voice");
@@ -88,42 +91,43 @@ var drawVisual;
 
 // main block for doing the audio recording
 function beginUserMedia() {
-if (navigator.getUserMedia) {
-  console.log('getUserMedia supported.');
-  navigator.getUserMedia (
-    // constraints - only audio needed for this app
-    {
-      audio: true
-    },
+  if (navigator.getUserMedia) {
 
-    // Success callback
-    function(stream) {
-      source = audioCtx.createMediaStreamSource(stream);
-      source.connect(analyser);
-      analyser.connect(distortion);;
-      distortion.connect(biquadFilter);
-      biquadFilter.connect(gainNode);
+    navigator.getUserMedia (
+      // constraints - only audio needed for this app
+      {
+        audio: true,
+  	  video: false
+      },
+      // Success callback
+      function(stream) {
+  	  console.log("made it to the stream");
+        source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        analyser.connect(distortion);;
+        distortion.connect(biquadFilter);
+        biquadFilter.connect(gainNode);
 
-      // convolver dosen't work for some reason
-      // goin to put it in the todo
-      //convolver.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
+        // convolver dosen't work for some reason
+        // goin to put it in the todo
+        //convolver.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
 
-      console.log(distortion.curve);
-      console.log(distortion.oversample);
+        console.log(distortion.curve);
+        console.log(distortion.oversample);
 
-      visualize();
-      //voiceChange();
-    },
+        visualize();
+        //voiceChange();
+      },
 
-    // Error callback
-    function(err){
-      console.log("The following gUM error occured: " + err);
-    }
-  );
-} else {
-  console.log('getUserMedia not supported on your browser!');
-}
+      // Error callback
+      function(err){
+        console.log("The following gUM error occured: " + err);
+      }
+    );
+  } else {
+    console.log('getUserMedia not supported on your browser!');
+  }
 }
 
 beginUserMedia();

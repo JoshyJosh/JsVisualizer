@@ -1,16 +1,15 @@
 This is a visualizer based on the mozilla voice-change-o-matic
 http://mdn.github.io/voice-change-o-matic/
 
-The visualizer should be a full screen projection that works in any modern browser.
+The visualizer should be a full screen projection that currently works in Firefox only (working on chrome, tests needed for other browsers).
 
 Current stage is just a (slightly worse) copy of the original, because I wanted to reverse engineer it a bit.
 
-Currently the visualizer is on fullscreen, the options are accessible with the up and down arrows.
-
-Mute works with a delay. Think its something to do with buffer, checking it with next iteration.
-Has buggy mute unmute toggle.
+Currently the visualizer is on fullscreen, the options are accessible with the UP and DOWN arrows.
 
 TODO:
+
+-*MAJOR TODO* getUserMedia not working for chrome browsers (haven't tested safari) am looking into ways to fix it without modernizr (gotta learn right?)
 
 -improved UI (top center Mozilla mic icon might be a problem)
 
