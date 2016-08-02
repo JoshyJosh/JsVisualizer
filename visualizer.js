@@ -85,6 +85,9 @@ var intendedWidth = document.querySelector('.wrapper').clientWidth;
 
 canvas.setAttribute('width', intendedWidth);
 
+var intendedHeight = window.innerHeight;
+canvas.setAttribute('height', intendedHeight);
+
 var visualSelect = document.getElementById("visual");
 
 var drawVisual;
@@ -96,8 +99,7 @@ function beginUserMedia() {
     navigator.getUserMedia (
       // constraints - only audio needed for this app
       {
-        audio: true,
-  	  video: false
+        audio: true
       },
       // Success callback
       function(stream) {
@@ -339,4 +341,27 @@ function voiceMute() {
   }
 }
 
+// Fullscreen mode
+var canvasVis = document.getElementsByClassName("canvaswrap")[0];
+function toggleFullScreen() {
+  if(!document.mozFullScreen && !document.webkitFullScreen) {
+    if(canvasVis.mozRequestFullScreen) {
+      canvasVis.mozRequestFullScreen();
+    } else {
+      canvasVis.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else{
+    if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
+
+document.addEventListener("keydown", function(e) {
+  if(e.keyCode == 70) {
+    toggleFullScreen();
+  }
+}, false);
 };
