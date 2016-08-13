@@ -1,8 +1,7 @@
-This is a visualizer based on the mozilla voice-change-o-matic
-http://mdn.github.io/voice-change-o-matic/
+This is a visualizer based on [Mozilla's voice-change-o-matic](http://mdn.github.io/voice-change-o-matic/)
 
 The visualizer should be a full screen projection that currently fully works in Firefox only.
-Chrome users need to run chrome with "--allow-file-access-from-files" or on a local server if they want to use the files localy. An online version will be prepared for such users.
+Chrome users need to run chrome with "--allow-file-access-from-files" or on a local server if they want to use the files localy OR use the [current online heroku version](https://murmuring-sands-4938.herokuapp.com/).
 
 Current stage is just a (slightly worse) copy of the original, because I wanted to reverse engineer it a bit.
 
